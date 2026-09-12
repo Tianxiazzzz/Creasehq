@@ -12,14 +12,17 @@
 <body>
 
 <!-- ============================================================ -->
-<!-- AD SLOT: top banner. Replace this comment block with your    -->
-<!-- AdSense <script> loader (once) in <head>, and drop an <ins>   -->
-<!-- ad unit tag here. Keep the wrapper div so spacing holds even  -->
-<!-- before ads are approved.                                      -->
+<!-- ADSTERRA SMARTLINK: replace ADSTERRA_SMARTLINK_URL below with -->
+<!-- the Direct Link URL from your Adsterra dashboard (Direct      -->
+<!-- Links / SmartLinks page). It's a plain link, not a script —   -->
+<!-- safe to place anywhere. Move it wherever fits your layout —   -->
+<!-- just keep it away from the actual tool buttons so it doesn't  -->
+<!-- interrupt someone mid-task.                                    -->
 <!-- ============================================================ -->
-<div class="ad-slot ad-slot--banner" aria-hidden="true">
-  <span>Ad space — top banner (728×90 or responsive)</span>
-</div>
+<a href="https://www.profitableratecpmnetwork.com/w512hsjnzf?key=5056ecbee52fadd324af04119b681292
+" target="_blank" rel="noopener sponsored" class="ad-slot ad-slot--smartlink" aria-label="Sponsored link">
+  <span>Sponsored</span>
+</a>
 
 <header class="site-header">
   <a href="#top" class="logo">Creasehq</a>
@@ -81,7 +84,7 @@
     <div class="tool-tabs" role="tablist" aria-label="Choose a PDF tool">
       <button class="tool-tab is-active" role="tab" aria-selected="true" data-tool="merge">Merge</button>
       <button class="tool-tab" role="tab" aria-selected="false" data-tool="split">Split</button>
-      <button class="tool-tab" role="tab" aria-selected="false" data-tool="convert">Convert to PDF</button>
+      <button class="tool-tab" role="tab" aria-selected="false" data-tool="convert">Convert</button>
       <button class="tool-tab" role="tab" aria-selected="false" data-tool="compress">Compress</button>
     </div>
 
@@ -134,6 +137,7 @@
       <div class="sub-tabs" role="tablist" aria-label="Choose a conversion type">
         <button class="sub-tab is-active" role="tab" aria-selected="true" data-convert="image">Image → PDF</button>
         <button class="sub-tab" role="tab" aria-selected="false" data-convert="word">Word → PDF</button>
+        <button class="sub-tab" role="tab" aria-selected="false" data-convert="pdftoword">PDF → Word</button>
       </div>
 
       <!-- Image to PDF -->
@@ -162,6 +166,21 @@
         <div class="tool-actions">
           <button class="btn btn-primary" id="btn-word-to-pdf" disabled>Convert to PDF</button>
           <span class="tool-status" id="status-word"></span>
+        </div>
+      </div>
+
+      <!-- PDF to Word -->
+      <div class="convert-panel" id="convert-pdftoword">
+        <div class="dropzone" id="dropzone-pdftoword" tabindex="0" role="button" aria-label="Add a PDF file to convert to Word">
+          <p class="dropzone-title">Drop a PDF here, or click to choose a file</p>
+          <p class="dropzone-sub">Extracts the text from your PDF into an editable .docx file.</p>
+          <input type="file" id="file-input-pdftoword" accept="application/pdf" hidden>
+        </div>
+        <div class="file-list" id="file-list-pdftoword"></div>
+        <p class="tool-note">This pulls out the text only — original formatting, tables, columns, and images won't carry over, and scanned/photographed PDFs with no real text layer won't produce any text (that needs OCR, which this tool doesn't do). It works best on regular text-based PDFs.</p>
+        <div class="tool-actions">
+          <button class="btn btn-primary" id="btn-pdf-to-word" disabled>Convert to Word</button>
+          <span class="tool-status" id="status-pdftoword"></span>
         </div>
       </div>
     </div>
@@ -198,21 +217,13 @@
     </div>
   </section>
 
-  <!-- ============================================================ -->
-  <!-- AD SLOT: in-content, sits between the tool and the explainer  -->
-  <!-- section below. Good spot for a responsive display unit.      -->
-  <!-- ============================================================ -->
-  <div class="ad-slot ad-slot--incontent" aria-hidden="true">
-    <span>Ad space — in-content</span>
-  </div>
-
   <section id="how" class="how-section">
     <h2>How it works</h2>
     <div class="how-grid">
       <div class="how-card">
         <span class="how-num">1</span>
         <h3>Choose a tool</h3>
-        <p>Merge, split, convert an image or Word doc to PDF, or compress a large PDF down.</p>
+        <p>Merge, split, convert between PDF/image/Word, or compress a large PDF down.</p>
       </div>
       <div class="how-card">
         <span class="how-num">2</span>
@@ -249,6 +260,10 @@
       <summary>What Word file formats can I convert?</summary>
       <p>Modern .docx files. Older .doc files aren't supported directly — open them in Word and save as .docx first.</p>
     </details>
+    <details>
+      <summary>Will PDF to Word keep my original layout?</summary>
+      <p>No — this pulls out the text and rebuilds it as a plain, editable Word document. Formatting, tables, columns, and images aren't preserved, and scanned PDFs with no real text layer won't produce any text at all.</p>
+    </details>
   </section>
 </main>
 
@@ -261,6 +276,7 @@
 <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.12.2/mammoth.browser.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://unpkg.com/docx@7.1.0/build/index.js"></script>
 <script src="script.js"></script>
 </body>
 </html>

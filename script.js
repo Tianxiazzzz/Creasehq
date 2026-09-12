@@ -32,6 +32,7 @@ const subTabs = document.querySelectorAll(".sub-tab");
 const convertPanels = {
   image: document.getElementById("convert-image"),
   word: document.getElementById("convert-word"),
+  pdftoword: document.getElementById("convert-pdftoword"),
 };
 subTabs.forEach((tab) => {
   tab.addEventListener("click", () => {
@@ -421,6 +422,96 @@ btnWordToPdf.addEventListener("click", async () => {
   } finally {
     if (container) container.remove();
     btnWordToPdf.disabled = false;
+  }
+});
+
+/* ---------- Convert: PDF to Word ---------- */
+let pdfToWordFile = null;
+const dropzonePdfToWord = document.getElementById("dropzone-pdftoword");
+const fileInputPdfToWord = document.getElementById("file-input-pdftoword");
+const fileListPdfToWord = document.getElementById("file-list-pdftoword");
+const btnPdfToWord = document.getElementById("btn-pdf-to-word");
+const statusPdfToWord = document.getElementById("status-pdftoword");
+
+setupDropzone(dropzonePdfToWord, fileInputPdfToWord, (files) => {
+  if (!files[0]) return;
+  pdfToWordFile = files[0];
+  fileListPdfToWord.innerHTML = `<div class="file-row"><span class="file-name">${pdfToWordFile.name}</span></div>`;
+  btnPdfToWord.disabled = false;
+  statusPdfToWord.textContent = "";
+});
+
+// Groups a page's text items into lines by their vertical position, then
+// orders each line's items left-to-right. This is a simple approximation —
+// it doesn't understand columns, tables, or reading order for complex layouts.
+function linesFromTextContent(textContent) {
+  const items = textContent.items.filter((item) => item.str.trim().length > 0);
+  const lines = [];
+  const Y_TOLERANCE = 3;
+  items.forEach((item) => {
+    const y = item.transform[5];
+    let line = lines.find((l) => Math.abs(l.y - y) <= Y_TOLERANCE);
+    if (!line) {
+      line = { y, items: [] };
+      lines.push(line);
+    }
+    line.items.push(item);
+  });
+  lines.sort((a, b) => b.y - a.y);
+  return lines.map((line) =>
+    line.items
+      .sort((a, b) => a.transform[4] - b.transform[4])
+      .map((item) => item.str)
+      .join(" ")
+  );
+}
+
+btnPdfToWord.addEventListener("click", async () => {
+  if (!window.pdfjsLib || !window.docx) {
+    statusPdfToWord.textContent = "The conversion engine failed to load. Try refreshing the page.";
+    return;
+  }
+  btnPdfToWord.disabled = true;
+  try {
+    const bytes = await pdfToWordFile.arrayBuffer();
+    const pdf = await pdfjsLib.getDocument({ data: bytes }).promise;
+
+    const { Document, Packer, Paragraph, TextRun, PageBreak } = docx;
+    const children = [];
+    let sawAnyText = false;
+
+    for (let i = 1; i <= pdf.numPages; i++) {
+      statusPdfToWord.textContent = `Reading page ${i} of ${pdf.numPages}…`;
+      const page = await pdf.getPage(i);
+      const textContent = await page.getTextContent();
+      const lines = linesFromTextContent(textContent);
+      if (lines.length) sawAnyText = true;
+
+      lines.forEach((line) => {
+        children.push(new Paragraph({ children: [new TextRun(line)] }));
+      });
+      if (i < pdf.numPages) {
+        children.push(new Paragraph({ children: [new PageBreak()] }));
+      }
+    }
+
+    if (!sawAnyText) {
+      statusPdfToWord.textContent = "No extractable text was found — this PDF is likely a scan or image with no text layer.";
+      btnPdfToWord.disabled = false;
+      return;
+    }
+
+    statusPdfToWord.textContent = "Building the Word document…";
+    const doc = new Document({ sections: [{ children }] });
+    const blob = await Packer.toBlob(doc);
+    const baseName = pdfToWordFile.name.replace(/\.pdf$/i, "");
+    downloadBlob(blob, `${baseName}.docx`);
+    statusPdfToWord.textContent = "Done — check your downloads.";
+  } catch (err) {
+    console.error(err);
+    statusPdfToWord.textContent = "Something went wrong reading that PDF.";
+  } finally {
+    btnPdfToWord.disabled = false;
   }
 });
 

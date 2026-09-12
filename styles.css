@@ -29,21 +29,25 @@ body {
 
 a { color: inherit; }
 
-/* --- Ad slots --- */
+/* --- Sponsored / ad slots --- */
 .ad-slot {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: repeating-linear-gradient(
-    45deg, var(--paper-dim), var(--paper-dim) 10px, #E4DFD3 10px, #E4DFD3 20px
-  );
-  border: 1px dashed var(--rule);
-  color: var(--ink-soft);
-  font-size: 0.8rem;
   border-radius: var(--radius);
 }
-.ad-slot--banner { max-width: 1100px; margin: 12px auto 0; height: 90px; }
-.ad-slot--incontent { max-width: 1100px; margin: 56px auto; height: 250px; }
+.ad-slot--smartlink {
+  max-width: 1100px;
+  margin: 12px auto 0;
+  height: 32px;
+  font-size: 0.75rem;
+  text-decoration: none;
+  color: var(--ink-soft);
+  border: 1px dashed var(--rule);
+  background: var(--paper-dim);
+  cursor: pointer;
+}
+.ad-slot--smartlink:hover { border-color: var(--stamp); color: var(--stamp-dark); }
 
 /* --- Header --- */
 .site-header {
