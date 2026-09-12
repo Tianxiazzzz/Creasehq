@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Creasehq — Merge, split, convert, and compress PDFs in your browser</title>
+<meta name="description" content="Combine PDFs, split them apart, convert images or Word docs to PDF, and compress large PDFs. Free, private, and works entirely in your browser — nothing is uploaded to a server.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- ============================================================ -->
+<!-- AD SLOT: top banner. Replace this comment block with your    -->
+<!-- AdSense <script> loader (once) in <head>, and drop an <ins>   -->
+<!-- ad unit tag here. Keep the wrapper div so spacing holds even  -->
+<!-- before ads are approved.                                      -->
+<!-- ============================================================ -->
+<div class="ad-slot ad-slot--banner" aria-hidden="true">
+  <span>Ad space — top banner (728×90 or responsive)</span>
+</div>
+
+<header class="site-header">
+  <a href="#top" class="logo">Creasehq</a>
+  <nav class="site-nav">
+    <a href="#tool">Merge</a>
+    <a href="#tool">Split</a>
+    <a href="#tool">Convert</a>
+    <a href="#tool">Compress</a>
+    <a href="#how">How it works</a>
+  </nav>
+</header>
+
+<main id="top">
+  <section class="hero">
+    <div class="hero-copy">
+      <h1>Everything you need<br>to wrangle a PDF.</h1>
+      <p class="hero-sub">Merge, split, convert, and compress — all four tools run right here in your browser. Your documents are never uploaded to a server.</p>
+      <div class="hero-actions">
+        <a href="#tool" class="btn btn-primary">Open the tool</a>
+        <span class="hero-note">No sign-up. No file limit games.</span>
+      </div>
+    </div>
+    <div class="hero-art" aria-hidden="true">
+      <svg viewBox="0 0 420 360" xmlns="http://www.w3.org/2000/svg">
+        <!-- back sheet -->
+        <g transform="translate(60,40) rotate(-6 150 140)">
+          <rect x="0" y="0" width="220" height="280" rx="4" fill="#E9E3D6" stroke="#C9C2B4" stroke-width="2"/>
+        </g>
+        <!-- middle sheet -->
+        <g transform="translate(90,30) rotate(4 150 140)">
+          <rect x="0" y="0" width="220" height="280" rx="4" fill="#F7F5F0" stroke="#C9C2B4" stroke-width="2"/>
+          <line x1="28" y1="46" x2="192" y2="46" stroke="#D6CFC0" stroke-width="6"/>
+          <line x1="28" y1="70" x2="192" y2="70" stroke="#E4DFD3" stroke-width="6"/>
+          <line x1="28" y1="94" x2="150" y2="94" stroke="#E4DFD3" stroke-width="6"/>
+        </g>
+        <!-- front sheet with fold -->
+        <g transform="translate(110,60)">
+          <path d="M0 0 H220 V280 H0 Z" fill="#FFFFFF" stroke="#C9C2B4" stroke-width="2"/>
+          <path d="M180 0 L220 40 L180 40 Z" fill="#E9E3D6" stroke="#C9C2B4" stroke-width="2"/>
+          <line x1="24" y1="66" x2="196" y2="66" stroke="#E4DFD3" stroke-width="7"/>
+          <line x1="24" y1="92" x2="196" y2="92" stroke="#E4DFD3" stroke-width="7"/>
+          <line x1="24" y1="118" x2="150" y2="118" stroke="#E4DFD3" stroke-width="7"/>
+          <line x1="24" y1="160" x2="196" y2="160" stroke="#F1EDE4" stroke-width="7"/>
+          <line x1="24" y1="186" x2="196" y2="186" stroke="#F1EDE4" stroke-width="7"/>
+          <line x1="24" y1="212" x2="120" y2="212" stroke="#F1EDE4" stroke-width="7"/>
+        </g>
+        <!-- stamp badge -->
+        <g transform="translate(300,210) rotate(-10)">
+          <circle cx="0" cy="0" r="42" fill="none" stroke="#B23A2E" stroke-width="3"/>
+          <circle cx="0" cy="0" r="34" fill="none" stroke="#B23A2E" stroke-width="1.5"/>
+          <text x="0" y="-4" text-anchor="middle" font-family="Fraunces, serif" font-size="13" fill="#B23A2E" font-weight="600">FREE</text>
+          <text x="0" y="14" text-anchor="middle" font-family="Inter, sans-serif" font-size="9" fill="#B23A2E" letter-spacing="1">NO LIMIT</text>
+        </g>
+      </svg>
+    </div>
+  </section>
+
+  <section id="tool" class="tool-section">
+    <div class="tool-tabs" role="tablist" aria-label="Choose a PDF tool">
+      <button class="tool-tab is-active" role="tab" aria-selected="true" data-tool="merge">Merge</button>
+      <button class="tool-tab" role="tab" aria-selected="false" data-tool="split">Split</button>
+      <button class="tool-tab" role="tab" aria-selected="false" data-tool="convert">Convert to PDF</button>
+      <button class="tool-tab" role="tab" aria-selected="false" data-tool="compress">Compress</button>
+    </div>
+
+    <!-- MERGE PANEL -->
+    <div class="tool-panel is-active" id="panel-merge">
+      <div class="dropzone" id="dropzone-merge" tabindex="0" role="button" aria-label="Add PDF files to merge">
+        <p class="dropzone-title">Drop PDFs here, or click to choose files</p>
+        <p class="dropzone-sub">Add two or more files. You can reorder them below before merging.</p>
+        <input type="file" id="file-input-merge" accept="application/pdf" multiple hidden>
+      </div>
+      <ul class="file-list" id="file-list-merge"></ul>
+      <div class="tool-actions">
+        <button class="btn btn-primary" id="btn-merge" disabled>Merge PDFs</button>
+        <span class="tool-status" id="status-merge"></span>
+      </div>
+    </div>
+
+    <!-- SPLIT PANEL -->
+    <div class="tool-panel" id="panel-split">
+      <div class="dropzone" id="dropzone-split" tabindex="0" role="button" aria-label="Add a PDF file to split">
+        <p class="dropzone-title">Drop a PDF here, or click to choose a file</p>
+        <p class="dropzone-sub">Choose one file to split into pages or a page range.</p>
+        <input type="file" id="file-input-split" accept="application/pdf" hidden>
+      </div>
+      <div class="file-list" id="file-list-split"></div>
+
+      <div class="split-options" id="split-options" hidden>
+        <label class="radio-row">
+          <input type="radio" name="split-mode" value="all" checked>
+          <span>Split into individual pages <em>(downloads a .zip)</em></span>
+        </label>
+        <label class="radio-row">
+          <input type="radio" name="split-mode" value="range">
+          <span>Extract a page range</span>
+        </label>
+        <div class="range-inputs" id="range-inputs">
+          <label>From page <input type="number" id="range-from" min="1" value="1"></label>
+          <label>to <input type="number" id="range-to" min="1" value="1"></label>
+        </div>
+      </div>
+
+      <div class="tool-actions">
+        <button class="btn btn-primary" id="btn-split" disabled>Split PDF</button>
+        <span class="tool-status" id="status-split"></span>
+      </div>
+    </div>
+
+    <!-- CONVERT PANEL -->
+    <div class="tool-panel" id="panel-convert">
+      <div class="sub-tabs" role="tablist" aria-label="Choose a conversion type">
+        <button class="sub-tab is-active" role="tab" aria-selected="true" data-convert="image">Image → PDF</button>
+        <button class="sub-tab" role="tab" aria-selected="false" data-convert="word">Word → PDF</button>
+      </div>
+
+      <!-- Image to PDF -->
+      <div class="convert-panel is-active" id="convert-image">
+        <div class="dropzone" id="dropzone-image" tabindex="0" role="button" aria-label="Add images to convert">
+          <p class="dropzone-title">Drop images here, or click to choose files</p>
+          <p class="dropzone-sub">JPG, PNG, WebP, GIF, or BMP. Add several to make a multi-page PDF — reorder them below.</p>
+          <input type="file" id="file-input-image" accept="image/*" multiple hidden>
+        </div>
+        <ul class="file-list" id="file-list-image"></ul>
+        <div class="tool-actions">
+          <button class="btn btn-primary" id="btn-image-to-pdf" disabled>Convert to PDF</button>
+          <span class="tool-status" id="status-image"></span>
+        </div>
+      </div>
+
+      <!-- Word to PDF -->
+      <div class="convert-panel" id="convert-word">
+        <div class="dropzone" id="dropzone-word" tabindex="0" role="button" aria-label="Add a Word document to convert">
+          <p class="dropzone-title">Drop a .docx file here, or click to choose one</p>
+          <p class="dropzone-sub">Works with modern Word documents (.docx). Older .doc files aren't supported — save as .docx first.</p>
+          <input type="file" id="file-input-word" accept=".docx" hidden>
+        </div>
+        <div class="file-list" id="file-list-word"></div>
+        <p class="tool-note">This re-creates your document's text and basic formatting as a PDF. Complex layouts, headers/footers, and some styling may shift slightly.</p>
+        <div class="tool-actions">
+          <button class="btn btn-primary" id="btn-word-to-pdf" disabled>Convert to PDF</button>
+          <span class="tool-status" id="status-word"></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- COMPRESS PANEL -->
+    <div class="tool-panel" id="panel-compress">
+      <div class="dropzone" id="dropzone-compress" tabindex="0" role="button" aria-label="Add a PDF to compress">
+        <p class="dropzone-title">Drop a PDF here, or click to choose a file</p>
+        <p class="dropzone-sub">Best for image-heavy PDFs (scans, photo-filled documents).</p>
+        <input type="file" id="file-input-compress" accept="application/pdf" hidden>
+      </div>
+      <div class="file-list" id="file-list-compress"></div>
+
+      <div class="compress-options" id="compress-options" hidden>
+        <p class="tool-note tool-note--warning">Compression works by re-rendering each page as an image at a lower quality. This shrinks the file size well, but the text will no longer be selectable or searchable afterward — it becomes part of the picture. Skip this if you need to keep editable/searchable text.</p>
+        <label class="radio-row">
+          <input type="radio" name="compress-level" value="high" checked>
+          <span>Light compression <em>(better quality, smaller savings)</em></span>
+        </label>
+        <label class="radio-row">
+          <input type="radio" name="compress-level" value="medium">
+          <span>Balanced <em>(good quality, solid savings)</em></span>
+        </label>
+        <label class="radio-row">
+          <input type="radio" name="compress-level" value="low">
+          <span>Strong compression <em>(lower quality, smallest file)</em></span>
+        </label>
+      </div>
+
+      <div class="tool-actions">
+        <button class="btn btn-primary" id="btn-compress" disabled>Compress PDF</button>
+        <span class="tool-status" id="status-compress"></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- AD SLOT: in-content, sits between the tool and the explainer  -->
+  <!-- section below. Good spot for a responsive display unit.      -->
+  <!-- ============================================================ -->
+  <div class="ad-slot ad-slot--incontent" aria-hidden="true">
+    <span>Ad space — in-content</span>
+  </div>
+
+  <section id="how" class="how-section">
+    <h2>How it works</h2>
+    <div class="how-grid">
+      <div class="how-card">
+        <span class="how-num">1</span>
+        <h3>Choose a tool</h3>
+        <p>Merge, split, convert an image or Word doc to PDF, or compress a large PDF down.</p>
+      </div>
+      <div class="how-card">
+        <span class="how-num">2</span>
+        <h3>Everything stays local</h3>
+        <p>All the processing happens using your browser's own resources — files aren't sent to a server.</p>
+      </div>
+      <div class="how-card">
+        <span class="how-num">3</span>
+        <h3>Download the result</h3>
+        <p>Your combined or split file downloads straight to your device, ready to use.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="faq-section">
+    <h2>Common questions</h2>
+    <details>
+      <summary>Is there a file size or page limit?</summary>
+      <p>No artificial limit is set by this tool. Very large files depend on your device's available memory, since processing happens in your browser.</p>
+    </details>
+    <details>
+      <summary>Do you store my documents?</summary>
+      <p>No. Files are processed locally in your browser and are never uploaded anywhere.</p>
+    </details>
+    <details>
+      <summary>Can I reorder pages before merging?</summary>
+      <p>Yes — use the up and down controls next to each file in the list to change the order before you merge.</p>
+    </details>
+    <details>
+      <summary>Will compressing my PDF keep the text selectable?</summary>
+      <p>No — compression re-renders each page as an image, so the resulting file is a lightweight picture of each page rather than searchable text. Use it for scans or photo-heavy PDFs, not documents you need to keep text-selectable.</p>
+    </details>
+    <details>
+      <summary>What Word file formats can I convert?</summary>
+      <p>Modern .docx files. Older .doc files aren't supported directly — open them in Word and save as .docx first.</p>
+    </details>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <span>Creasehq — PDF tools that run in your browser.</span>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.12.2/mammoth.browser.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
