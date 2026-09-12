@@ -42,9 +42,7 @@ a { color: inherit; }
   height: 32px;
   font-size: 0.75rem;
   text-decoration: none;
-  color: var(--ink-soft);
-  border: 1px dashed var(--rule);
-  background: var(--paper-dim);
+  border-radius:6mm;
   cursor: pointer;
 }
 .ad-slot--smartlink:hover { border-color: var(--stamp); color: var(--stamp-dark); }
